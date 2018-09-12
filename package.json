@@ -1,0 +1,36 @@
+{
+  "name": "angular-webgl-template",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "clean": "del-cli -f ./dist",
+    "ng": "ng",
+    "start": "npm run build:dev && ng serve",
+    "build:dev": "ng build",
+    "build:prod": "npm run clean && ng build --prod",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^6.0.5",
+    "@angular/compiler": "^6.0.5",
+    "@angular/core": "^6.0.5",
+    "@angular/platform-browser": "^6.0.5",
+    "@angular/platform-browser-dynamic": "^6.0.5",
+    "gl-matrix": "^2.6.1",
+    "npm": "^6.1.0",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.6.8",
+    "@angular/cli": "~6.0.8",
+    "@angular/compiler-cli": "^6.0.5",
+    "@angular/language-service": "^6.0.5",
+    "@types/node": "~6.0.60",
+    "codelyzer": "^4.0.1",
+    "del-cli": "^1.1.0",
+    "ts-node": "~4.1.0",
+    "tslint": "~5.9.1",
+    "typescript": "^2.7.2"
+  }
+}
