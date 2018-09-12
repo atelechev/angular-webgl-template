@@ -1,14 +1,11 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { DimensionsService } from './services/dimensions.service';
-import { TemplateRenderer } from './renderers/template-renderer';
+import { TemplateProgram } from './renderers/program/template-program';
 
 
 @Component({
   selector: `app-template`,
-  templateUrl: './app.component.html',
-  providers: [
-    TemplateRenderer
-  ]
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements AfterViewInit {
 
@@ -17,8 +14,10 @@ export class AppComponent implements AfterViewInit {
 
   private gl: WebGLRenderingContext;
 
-  constructor(private readonly dimensions: DimensionsService,
-              private readonly renderer: TemplateRenderer) {
+  private program: TemplateProgram;
+
+  constructor(private readonly dimensions: DimensionsService) {
+
   }
 
   private updateCanvasSize(): void {
@@ -38,11 +37,17 @@ export class AppComponent implements AfterViewInit {
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
   }
 
-  private bindRenderingContext(): void {
-    this.renderer.setGraphicsContext(this.gl);
+  private initPrograms(): void {
+    // there might be more than one program implementations to initialize
+    this.program = new TemplateProgram(this.gl);
   }
 
   private clearViewport(): void {
+    /*
+     Clearing the viewport is left at this level (not in Program impl), because
+     there might be more than one program for a single application, but the viewport
+     is reset once per render() call.
+     */
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
   }
@@ -50,7 +55,7 @@ export class AppComponent implements AfterViewInit {
   private render(): void {
     const animate = () => {
       this.clearViewport();
-      this.renderer.render();
+      this.program.render();
       requestAnimationFrame(animate);
     };
     animate();
@@ -60,7 +65,7 @@ export class AppComponent implements AfterViewInit {
     this.updateCanvasSize();
     this.initRenderingContext();
     this.adjustCanvasToViewportSize();
-    this.bindRenderingContext();
+    this.initPrograms();
     this.render();
   }
 

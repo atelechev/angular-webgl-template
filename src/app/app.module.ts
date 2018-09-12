@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DimensionsService } from './services/dimensions.service';
-import { TemplateRenderer } from './renderers/template-renderer';
 
 
 @NgModule({
@@ -14,8 +13,7 @@ import { TemplateRenderer } from './renderers/template-renderer';
     BrowserModule
   ],
   providers: [
-    DimensionsService,
-    TemplateRenderer
+    DimensionsService
   ],
   bootstrap: [ AppComponent ]
 })

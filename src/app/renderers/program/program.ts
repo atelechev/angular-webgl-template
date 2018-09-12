@@ -16,6 +16,8 @@ export abstract class Program {
     this.program = gl.createProgram();
     this.attachShaders();
     this.linkProgram();
+    this.use();
+    this.initShapes();
   }
 
   private linkProgram(): void {
@@ -72,5 +74,31 @@ export abstract class Program {
     this.gl.vertexAttribPointer(attrLocation, nbValuesPerGroup, RC.FLOAT, false, 0, 0);
     this.gl.enableVertexAttribArray(attrLocation);
   }
+
+  protected createDataBuffer(coords: Array<number>): WebGLBuffer {
+    const buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(WebGLRenderingContext.ARRAY_BUFFER, buffer);
+    this.gl.bufferData(WebGLRenderingContext.ARRAY_BUFFER, new Float32Array(coords), WebGLRenderingContext.STATIC_DRAW);
+    return buffer;
+  }
+
+  /**
+   * Executes the instructions to bind data buffers for the underlying WebGL program.
+   */
+  protected abstract bindDataBuffers(): void;
+
+  /**
+   * Binds all buffers for the underlying WebGL program.
+   */
+  protected bindAllBuffers(): void {
+    this.bindDataBuffers();
+  }
+
+  /**
+   * Initializes the members that represent the shapes/geometries to render.
+   */
+  protected abstract initShapes(): void;
+
+  public abstract render(): void;
 
 }

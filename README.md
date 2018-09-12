@@ -1,8 +1,8 @@
 # Angular/TypeScript + WebGL Project Template
 
-This is a template project that allows to create WebGL applications using Angular and TypeScript.
+This is a template project that may serve as a quick start for creation of WebGL applications using Angular and TypeScript.
 
-The aim is to provide a simple, easy to understand, flexible and properly organized frame for this type of applications.
+The aim is to provide a simple, easy to understand, flexible and properly organized frame for this kind of applications.
 
 ---
 
@@ -46,6 +46,15 @@ The commands above should work equally from VSC integrated terminals or from any
 ## Implementation Details
 
 All source files having names starting with `template-` or entities prefixed with `Template*` are examples of the implementation of rendering a simple animated cube. These files/entities should be removed in case this template is used for a more meaningful WebGL application.
+
+Several parts of boilerplate code necessary for WebGL applications are wrapped into abstract entities of this template. To create a WebGL application with it, the following steps should be executed:
+
+* put shaders code into entities extending `AbstractShader`.
+
+* extend abstract `Program` class that wraps a WebGL program and contains its rendering logic.
+
+* plug the program(s) into the application in `AppComponent`.
+
 
 ### Shaders
 
@@ -96,7 +105,28 @@ export class CustomProgram extends Program {
 
 It is useful to put into the implementation the setters for uniforms and attributes of the shaders, like `u_Transform` in the example above.
 
+### Application Component
 
+One or more `Program` implementations may exist for a single application and they should be instantiated in `AppComponent` class:
+
+```typescript
+private initPrograms(): void {
+  this.program = new CustomProgram(this.gl);
+}
+```
+
+Once instantiated, its `render()` method should invoke `render()` methods on each existing program:
+
+````typescript
+private render(): void {
+  const animate = () => {
+    this.clearViewport();
+    this.program.render(); // delegate the rendering to the program
+    requestAnimationFrame(animate);
+  };
+  animate();
+}
+```
 
 ---
 
