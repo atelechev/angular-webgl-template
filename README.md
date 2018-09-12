@@ -100,6 +100,9 @@ export class CustomProgram extends Program {
   public setTransformMatrix(matrix: any): void {
     this.gl.uniformMatrix4fv(this.transformMatrixLocation, false, matrix);
   }
+
+  // implement abstract methods: initShapes(), bindDataBuffers() and render().
+
 }
 ```
 
@@ -117,7 +120,7 @@ private initPrograms(): void {
 
 Once instantiated, its `render()` method should invoke `render()` methods on each existing program:
 
-````typescript
+```typescript
 private render(): void {
   const animate = () => {
     this.clearViewport();
